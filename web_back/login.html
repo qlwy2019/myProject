@@ -12,6 +12,7 @@
     <script src="./js/jquery-1.12.4.min.js"></script>
     <script src="./js/bootstrap/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="./js/bootstrap/css/bootstrap.min.css">
+    <script src="./js/utils/user.js"></script>
 
 </head>
 
@@ -64,10 +65,7 @@
                 $('#myModal').modal('show');
                 $("#tishi").text('不能为空');
             } else {
-                $.post("http://localhost:8000/admin/login", {
-                    user_name: myName,
-                    password: myPassword,
-                }, function(res) {
+                user.login(myName, myPassword, function(res) {
                     console.log(res);
                     if (res.code == 200) {
                         location.href = './index.html';
@@ -75,7 +73,6 @@
                         $('#myModal').modal('show');
                         $("#tishi").text(res.msg);
                     }
-
                 })
             }
         })

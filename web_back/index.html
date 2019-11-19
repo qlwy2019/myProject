@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="css/iconfont.css">
     <link rel="stylesheet" href="css/main.css">
     <script src="js/jquery-1.12.4.min.js"></script>
+    <script src="./js/utils/user.js"></script>
 </head>
 
 <body>
@@ -18,7 +19,7 @@
         <a href="#" class="logo"><img src="images/logo02.png" alt="logo"></a>
         <div class="user_info">
             <img class="userImg" src="images/2.jpg" alt="person">
-            <span>欢迎&nbsp;&nbsp;<i id="userName">李思思</i> </span>
+            <span>欢迎&nbsp;&nbsp;<i style="font-style: normal;"id="userName">李思思</i> </span>
             <b>管理员</b>
         </div>
         <div class="menu">
@@ -54,7 +55,7 @@
 
     <script>
         //获取后端信息
-        $.get('http://localhost:8000/admin/getuser', function(res) {
+        user.getInfo(function(res) {
                 console.log(res);
                 if (res.code == 200) {
                     $("#userName").text(res.data.nickname)
