@@ -15,7 +15,7 @@ var category = {
             callback(res);
         })
     },
-    del: function(callback) {
+    del: function(id, callback) {
         $.post(APIURLS.category_del, { 'id': id }, function(res) {
             callback(res);
         })
