@@ -2,7 +2,7 @@ var turl = "http://localhost:8000/";
 
 var user = {
     login: function(myName, myPassword, callback) {
-        $.post(turl + 'admin/login', {
+        $.post(APIURLS.user_login, {
             user_name: myName,
             password: myPassword,
         }, function(res) {
@@ -10,12 +10,12 @@ var user = {
         })
     },
     logout: function(callback) {
-        $.post(turl + 'admin/logout', function(res) {
+        $.post(APIURLS.user_logout, function(res) {
             callback(res);
         })
     },
     getInfo: function(callback) {
-        $.get(turl + 'admin/getuser', function(res) {
+        $.get(APIURLS.user_getInfo, function(res) {
             callback(res);
         })
     },
