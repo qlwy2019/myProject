@@ -105,7 +105,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" id="model_shutoff">关闭</button>
+                    <button type="button" class="btn btn-default" id="edit-shutoff">关闭</button>
                     <button type="button" class="btn btn-primary" id="edit-save">保存</button>
                 </div>
             </div>
@@ -195,13 +195,17 @@
                 if (res.code === 200) {
                     $('#editModal').modal('hide');
                     getAndShow();
+                } else {
+                    alert(res.msg);
                 }
             })
+        })
+        $('#edit-shutoff').click(function() {
+            $('#editModal').modal('hide');
         })
 
         // 新增种类
         $('#model_add').click(function() {
-
             var name = $('#cate-name').val().trim();
             var slug = $('#cate-slug').val().trim();
             if (name === '' || slug === '') {
@@ -215,6 +219,9 @@
                     getAndShow();
                 }
             })
+        })
+        $('#model_shutoff').click(function() {
+            $('#addModal').modal('hide');
         })
     </script>
 </body>

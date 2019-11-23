@@ -15,6 +15,10 @@
     <script src="js/jedate/js/jedate.js"></script>
     <script src="js/tinymce/js/tinymce/tinymce.min.js"></script>
     <script src="js/tinymce/js/tinymce_setup.js"></script>
+    <script src="./js/config.js"></script>
+    <script src="./js/category.js"></script>
+    <script src="./js/article.js"></script>
+    <script src="./js/template-web.js"></script>
 </head>
 
 <body>
@@ -23,28 +27,28 @@
             写文章
         </div>
         <div class="container-fluid common_con">
-            <form class="form-horizontal article_form">
+            <form class="form-horizontal article_form" id="myform">
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2 control-label">文章标题：</label>
                     <div class="col-sm-10">
-                        <input type="email" class="form-control" id="inputEmail3" placeholder="文章标题">
+                        <input type="email" name="title" class="form-control" id="inputEmail3" placeholder="文章标题">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputPassword3" class="col-sm-2 control-label">文章封面：</label>
                     <div class="col-sm-10">
-                        <input type="file" id="exampleInputFile">
+                        <input type="file" name="cover" id="coverImg">
+                    </div>
+                    <div>
+                        <img style="height: 200px;" id="previewImg" src="./images/2.jpg" alt="">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2 control-label">文章类别：</label>
                     <div class="col-sm-4">
-                        <select class="form-control">
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
+                        <select id="aticle-cate" name="type" class="form-control">
+                            
+                            <!-- <option>5</option> -->
                         </select>
                     </div>
                 </div>
@@ -53,10 +57,10 @@
                     <div class="col-sm-4">
 
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="YYYY-MM-DD" id="dateinput">
+                            <input type="text" class="form-control" name="date" placeholder="YYYY-MM-DD" id="dateinput">
                             <span class="input-group-btn">
                                 <button class="btn btn-default" type="button"
-                                    onclick="jeDate('#dateinput',{trigger:false,format: 'YYYY-MM-DD'})"><i
+                                    onclick="jeDate(' #dateinput ',{trigger:false,format: 'YYYY-MM-DD '})"><i
                                         class="iconfont icon-icondate"></i></button>
                             </span>
                         </div>
@@ -72,14 +76,51 @@
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <button type="submit" class="btn btn-success">发布</button>
+                        <button type="button" id="publish" class="btn btn-success">发布</button>
                         <button type="submit" class="btn btn-default">存为草稿</button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
-
+    <script id='a-cate ' type="text/html">
+        {{each data item i}}
+        <option value={{item.id}}>{{item.name}}</option>
+        {{/each}}
+    </script>
+    <script>
+        category.get(function(res) {
+            // console.log(res);
+            var htmlStr = template('a-cate ', res);
+            $('#aticle-cate ').html(htmlStr);
+        })
+    </script>
+    <script>
+        //预览图片功能
+        $('#coverImg').change(function() {
+                // console.dir(this.files[0]);
+                var file = this.files[0];
+                var path = URL.createObjectURL(file);
+                $('#previewImg').prop('src', path);
+            })
+            // 文章发布
+        $('#publish ').click(function() {
+            var fd = new FormData(document.getElementById('myform'));
+            fd.append('state', '已发布')
+                // 如果要获取富文本编辑中的内容，
+                // 则需要调用它自己的api，而不能直接从textarea中取
+                // fd.set(key,value); 会覆盖fd中的key
+            fd.set('content', tinyMCE.activeEditor.getContent())
+            article.add(fd, function(res) {
+                console.log(res);
+                if (res.code === 201) {
+                    alert('添加成功')
+                } else {
+                    alert(res.msg)
+                }
+            })
+        })
+    </script>
 </body>
 
 </html>
