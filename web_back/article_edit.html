@@ -15,6 +15,10 @@
     <script src="js/jedate/js/jedate.js"></script>
     <script src="js/tinymce/js/tinymce/tinymce.min.js"></script>
     <script src="js/tinymce/js/tinymce_setup.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/template-web.js"></script>
+    <script src="js/category.js"></script>
+    <script src="js/article.js"></script>
 
 </head>
 
@@ -24,29 +28,29 @@
             文章编辑
         </div>
         <div class="container-fluid common_con">
-            <form class="form-horizontal article_form">
+            <form class="form-horizontal article_form" id="myform">
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2 control-label">文章标题：</label>
                     <div class="col-sm-10">
-                        <input type="email" class="form-control" id="inputEmail3" value="文章标题文字">
+                        <input type="email" class="form-control" id="article_title" name="title" value="文章标题文字">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputPassword3" class="col-sm-2 control-label">文章封面：</label>
                     <div class="col-sm-10">
                         <img src="images/pic06.jpg" class="article_cover">
-                        <input type="file" id="exampleInputFile">
+                        <input type="file" id="article_cover" name="cover">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2 control-label">文章类别：</label>
                     <div class="col-sm-4">
-                        <select id="aticle-edit" class="form-control">
-                            <option>类别一</option>
+                        <select id="aticle-edit" class="form-control" name="type">
+                            <!-- <option>类别一</option>
                             <option>类别二</option>
                             <option>类别三</option>
                             <option selected>类别四</option>
-                            <option>类别五</option>
+                            <option>类别五</option> -->
                         </select>
                     </div>
                 </div>
@@ -55,7 +59,7 @@
                     <div class="col-sm-4">
 
                         <div class="input-group">
-                            <input type="text" class="form-control" value="2019-05-17" id="dateinput">
+                            <input type="text" class="form-control" name="date" value="2019-05-17" id="article_date">
                             <span class="input-group-btn">
                                 <button class="btn btn-default" type="button"
                                     onclick="jeDate('#dateinput',{trigger:false,format: 'YYYY-MM-DD'})"><i
@@ -72,14 +76,53 @@
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <button type="submit" class="btn btn-success">修改</button>
+                        <button type="button" id="btn_edit" class="btn btn-success">修改</button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
-
+    <!-- 类别的模板 -->
+    <script id="temp_cate" type="text/html">
+        {{each data item i}}
+        <option value="{{item.id}}">{{item.name}}</option>
+        {{/each}}
+    </script>
     <script>
+        var id = location.search.substr(4);
+        //显示文章详情
+        article.getDetail(id, function(res) {
+            console.log(res);
+            var typeId = res.data.type;
+            $('#article_title').val(res.data.title);
+            $('#article_cover').prop('src', res.data.cover);
+            $('#aticle-date').val(res.data.date);
+            $('#rich_content').val(res.data.content);
+            // 获取文章类别
+            category.get(function(res) {
+                var htmlStr = template('temp_cate', res);
+                $('#aticle-edit').html(htmlStr);
+                // 显示当前选中文章的类别
+                $('#aticle-edit').val(typeId);
+            })
+        })
+
+        // 编辑文章
+        $('#btn_edit').click(function() {
+            var fd = new FormData(document.getElementById('myform'));
+            fd.append('id', id); //添加属性
+            fd.set('content', tinyMCE.activeEditor.getContent()); //富文本域内容获取
+            article.edit(fd, function(res) {
+                if (res.code == 200) {
+                    alert('修改成功')
+                    location.href = "./index.html";
+                } else {
+                    alert(res.msg);
+                }
+
+            })
+
+        })
     </script>
 </body>
 
