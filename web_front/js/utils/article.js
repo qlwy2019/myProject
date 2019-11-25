@@ -42,5 +42,10 @@ var article = {
         $.get(APIURLS.article_get, { 'id': id }, function(res) {
             callback(res);
         })
+    },
+    getFocus: function(callback) {
+        $.get(APIURLS.article_get, { perpage: 5, state: '已发布' }, function(res) {
+            callback(res);
+        })
     }
 }

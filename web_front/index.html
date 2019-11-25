@@ -28,23 +28,14 @@
         <div class="menu">
             <div class="menu_collapse fl">
                 <a href="javascript:;" class="level_one"><i class="fa fa-list-ul"></i>全部分类</a>
-                <ul class="level_two">
-                    <li class="up"></li>
-                    <li><a href="#">最 新</a></li>
-                    <li><a href="#">科 技</a></li>
-                    <li><a href="#">股 市</a></li>
-                    <li><a href="#">商 品</a></li>
-                    <li><a href="#">外 汇</a></li>
-                    <li><a href="#">公 司</a></li>
+                <ul class="level_two" id="level_two">
+                    <!-- <li class="up"></li> -->
+                    <!--  -->
                 </ul>
             </div>
-            <ul class="left_menu fl">
-                <li><a href="#">最 新</a></li>
-                <li><a href="#">科 技</a></li>
-                <li><a href="#">股 市</a></li>
-                <li><a href="#">商 品</a></li>
-                <li><a href="#">外 汇</a></li>
-                <li><a href="#">公 司</a></li>
+            <ul class="left_menu fl" id="left_menu">
+                <!-- <li><a href="#">最 新</a></li> -->
+
             </ul>
             <ul class="right_menu fr">
                 <li><a href="#">科技专题</a></li>
@@ -55,27 +46,12 @@
 
     <div class="main_con clearfix">
         <div class="left_con">
-            <ul class="focus_list">
-                <li class="first">
+            <ul class="focus_list" id="focus_list">
+                <!-- <li class="first">
                     <a href="#"><img src="images/pic01.jpg" alt=""></a>
                     <p>图片说明</p>
-                </li>
-                <li>
-                    <a href="#"><img src="images/pic02.jpg" alt=""></a>
-                    <p>图片说明图片说明图片说明图片说明图片说明图片说明图片说明图片说明图片说明</p>
-                </li>
-                <li>
-                    <a href="#"><img src="images/pic03.jpg" alt=""></a>
-                    <p>图片说明</p>
-                </li>
-                <li>
-                    <a href="#"><img src="images/pic05.jpg" alt=""></a>
-                    <p>图片说明</p>
-                </li>
-                <li>
-                    <a href="#"><img src="images/pic06.jpg" alt=""></a>
-                    <p>图片说明</p>
-                </li>
+                </li> -->
+
             </ul>
 
             <div class="common_title">
@@ -170,26 +146,7 @@
                         <b><em>丽丽</em> 9个月前(08-14)说:9个月前(08-14)说:9个月前(08-14)说:</b>
                         <strong>挺会玩的挺会玩的挺会玩的挺会玩的</strong>
                     </li>
-                    <li>
-                        <span>R</span>
-                        <b><em>Rechael</em> 9个月前(08-14)说:</b>
-                        <strong>挺会玩的</strong>
-                    </li>
-                    <li>
-                        <span>J</span>
-                        <b><em>John</em> 9个月前(08-14)说:</b>
-                        <strong>挺会玩的</strong>
-                    </li>
-                    <li>
-                        <span>段</span>
-                        <b><em>段正淳</em> 9个月前(08-14)说:</b>
-                        <strong>挺会玩的</strong>
-                    </li>
-                    <li>
-                        <span>乔</span>
-                        <b><em>乔峰</em> 9个月前(08-14)说:</b>
-                        <strong>挺会玩的</strong>
-                    </li>
+
                 </ul>
             </div>
             <div class="common_wrap">
@@ -215,12 +172,51 @@
             <span>|</span>
             <a href="#">招聘人才</a>
             <span>|</span>
-            <a href="#">友情链接</a>		
+            <a href="#">友情链接</a>
         </div>
-        <p>CopyRight © 2019 深圳大事件信息技术股份有限公司   All Rights Reserved</p>
-        <p>电话：0755-****888    粤ICP备*******8号</p>
+        <p>CopyRight © 2019 深圳大事件信息技术股份有限公司 All Rights Reserved</p>
+        <p>电话：0755-****888 粤ICP备*******8号</p>
     </div>
+    <script src="./js/jquery-1.12.4.min.js"></script>
+    <script src="./js/template-web.js"></script>
+    <script src="./js/utils/config.js"></script>
+    <script src="./js/utils/category.js"></script>
+    <script src="./js/utils/article.js"></script>
+    <script src="./js/utils/comment.js"></script>
 
+    <script id="temp_cate" type="text/html">
+        {{each data item}}
+        <li><a href="#">{{item.name}}</a></li>
+        {{/each}}
+    </script>
+    <script id="temp_focus" type="text/html">
+        {{each data item idx}} {{if idx == 0}}
+        <li class="first">
+            <a href="/article.html?id={{item.id}}" target="_blank"><img src="{{item.cover}}" alt=""></a>
+            <p>{{item.title}}e</p>
+        </li>
+        {{else}}
+        <li>
+            <a href="/article.html?id={{item.id}}" target="_blank"><img src="{{item.cover}}" alt=""></a>
+            <p>{{item.title}}</p>
+        </li>
+        {{/if}} {{/each}}
+    </script>
+    <!-- 导航栏 -->
+    <script>
+        category.get(function(res) {
+                var htmlStr = template('temp_cate', res);
+                $('#left_menu').html(htmlStr);
+                $('#level_two').html('<li class="up"></li>' + htmlStr)
+            })
+            // 焦点新闻图
+        article.getFocus(function(res) {
+            console.log(res);
+
+            var htmlStr = template('temp_focus', res);
+            $('#focus_list').html(htmlStr);
+        })
+    </script>
 </body>
 
-</html>
+</html>s
