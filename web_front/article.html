@@ -196,7 +196,8 @@
 
         // dayjs设置语言
         dayjs.locale('zh-cn')
-            // 获取文章id
+        getAndShow();
+        // 获取文章id
         var id = location.search.substr(4);
         console.log(id);
         // 显示文章相关内容
@@ -242,23 +243,25 @@
                 if (res.code == 200) {
                     var name = $('#comment_name').val('');
                     var content = $('#comment_content').val('');
+                    getAndShow();
                 }
 
             })
         })
 
         // 获取评论列表   comment_detail_list
-        comment.show(id, function(res) {
-            console.log(res);
-            res.data.reverse();
-            res.data.forEach(function(item) {
-                item.dt = dayjs(item.dt).toNow(); //设置属性值
-                console.log(item.dt, typeof item.dt);
-
+        function getAndShow() {
+            comment.show(id, function(res) {
+                console.log(res);
+                res.data.reverse();
+                res.data.forEach(function(item) {
+                    item.dt = dayjs(item.dt).toNow(); //设置属性值
+                    console.log(item.dt, typeof item.dt);
+                })
+                var htmlStr = template("temp_comment", res);
+                $('#comment_detail_list').html(htmlStr);
             })
-            var htmlStr = template("temp_comment", res);
-            $('#comment_detail_list').html(htmlStr);
-        })
+        }
     </script>
 </body>
 
