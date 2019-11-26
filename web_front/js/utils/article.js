@@ -1,51 +1,25 @@
 var article = {
-
-    get: function(curPage, type, state, callback) {
-        $.get(APIURLS.article_get, { page: curPage, state: state, type: type }, function(res) {
-            callback(res);
-        })
-    },
-    add: function(fd, callback) {
-        // $.post( fd, function(res) {
-        //     callback(res);
-        // })
+    get: (curPage, type, state, callback) => $.get(APIURLS.article_get, { page: curPage, state: state, type: type }, res => callback(res)),
+    add: (fd, callback) =>
         $.ajax({
             url: APIURLS.article_add,
             type: 'post',
             data: fd,
             processData: false,
             contentType: false,
-            success: function(res) {
-                callback(res);
-
-            }
-        })
-    },
-    del: function(id, callback) {
-        $.get(APIURLS.article_del, { 'id': id }, function(res) {
-            callback(res);
-        })
-    },
-    edit: function(fd, callback) {
+            success: res => callback(res)
+        }),
+    del: (id, callback) => $.get(APIURLS.article_del, { 'id': id }, res => callback(res)),
+    edit: (fd, callback) =>
         $.ajax({
             url: APIURLS.article_edit,
             type: 'post',
             data: fd,
             processData: false,
             contentType: false,
-            success: function(res) {
-                callback(res)
-            }
-        })
-    },
-    getDetail: function(id, callback) {
-        $.get(APIURLS.article_get, { 'id': id }, function(res) {
-            callback(res);
-        })
-    },
-    getFocus: function(callback) {
-        $.get(APIURLS.article_get, { perpage: 5, state: '已发布' }, function(res) {
-            callback(res);
-        })
-    }
+            success: res => callback(res)
+        }),
+    getDetail: (id, callback) => $.get(APIURLS.article_get, { 'id': id }, res => callback(res)),
+    getFocus: callback => $.get(APIURLS.article_get, { perpage: 5, state: '已发布' }, res => callback(res))
+
 }

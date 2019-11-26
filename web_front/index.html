@@ -204,16 +204,16 @@
     </script>
     <!-- 导航栏 -->
     <script>
-        category.get(function(res) {
-                var htmlStr = template('temp_cate', res);
+        category.get(res => {
+                let htmlStr = template('temp_cate', res);
                 $('#left_menu').html(htmlStr);
                 $('#level_two').html('<li class="up"></li>' + htmlStr)
             })
             // 焦点新闻图
-        article.getFocus(function(res) {
+        article.getFocus(res => {
             console.log(res);
 
-            var htmlStr = template('temp_focus', res);
+            let htmlStr = template('temp_focus', res);
             $('#focus_list').html(htmlStr);
         })
     </script>

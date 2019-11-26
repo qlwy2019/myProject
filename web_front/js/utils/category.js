@@ -1,23 +1,6 @@
 var category = {
-
-    get: function(callback) {
-        $.get(APIURLS.category_get, function(res) {
-            callback(res);
-        })
-    },
-    add: function(name, slug, callback) {
-        $.post(APIURLS.category_add, { 'name': name, 'slug': slug }, function(res) {
-            callback(res);
-        })
-    },
-    edit: function(id, name, slug, callback) {
-        $.post(APIURLS.category_edit, { 'id': id, 'name': name, 'slug': slug }, function(res) {
-            callback(res);
-        })
-    },
-    del: function(id, callback) {
-        $.post(APIURLS.category_del, { 'id': id }, function(res) {
-            callback(res);
-        })
-    }
+    get: callback => $.get(APIURLS.category_get, res => callback(res)),
+    add: (name, slug, callback) => $.post(APIURLS.category_add, { 'name': name, 'slug': slug }, res => callback(res)),
+    edit: (id, name, slug, callback) => $.post(APIURLS.category_edit, { 'id': id, 'name': name, 'slug': slug }, res => callback(res)),
+    del: (id, callback) => $.post(APIURLS.category_del, { 'id': id }, res => callback(res))
 }

@@ -56,7 +56,7 @@
 
     <script>
         //获取后端信息
-        user.getInfo(function(res) {
+        user.getInfo(res => {
                 console.log(res);
                 if (res.code == 200) {
                     $("#userName").text(res.data.nickname)
@@ -66,18 +66,13 @@
                 }
             })
             // 退出登录
-        $("#btnLogout").click(function() {
-            $.post('http://localhost:8000/admin/logout', function(res) {
-                console.log(res);
-                location.href = "./login.html";
-            })
-        })
+        $("#btnLogout").click(() => $.post('http://localhost:8000/admin/logout', res => location.href = "./login.html"))
     </script>
 
 
     <script>
-        var $level01 = $('.level01');
-        var $subli = $('.level02 li')
+        let $level01 = $('.level01');
+        let $subli = $('.level02 li')
         $level01.click(function() {
             $level01.not($(this)).removeClass('active');
             $(this).addClass('active');
@@ -101,8 +96,8 @@
         })
 
         function resizeFrame() {
-            var frame_w = $('#main_body').outerWidth();
-            var frame_h = $('#main_body').outerHeight();
+            let frame_w = $('#main_body').outerWidth();
+            let frame_h = $('#main_body').outerHeight();
             $('#main_frame').css({
                 'width': frame_w,
                 'height': frame_h

@@ -58,21 +58,25 @@
     <script>
         // 点击提交，获取表单内容,判断是否非空
         $('#myModal').modal('hide')
-        $("#btn-Login").click(function() {
-            var myName = $("#myName").val().trim();
-            var myPassword = $("#myPassword").val().trim();
+        $("#btn-Login").click(() => {
+            let myName = $("#myName").val().trim();
+            let myPassword = $("#myPassword").val().trim();
             console.log(myName, myPassword);
             if (myName === "" || myPassword === "") {
                 $('#myModal').modal('show');
                 $("#tishi").text('不能为空');
             } else {
-                user.login(myName, myPassword, function(res) {
-                    console.log(res);
-                    if (res.code == 200) {
+                user.login(myName, myPassword, res => {
+                    // console.log(res);
+                    let {
+                        code,
+                        msg
+                    } = res;
+                    if (code == 200) {
                         location.href = './index.html';
                     } else {
                         $('#myModal').modal('show');
-                        $("#tishi").text(res.msg);
+                        $("#tishi").text(msg);
                     }
                 })
             }

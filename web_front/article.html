@@ -196,72 +196,71 @@
 
         // dayjs设置语言
         dayjs.locale('zh-cn')
+            // 获取评论列表   comment_detail_list
+            // 获取文章id
+        let id = location.search.substr(4);
+        let getAndShow = () => {
+            comment.show(id, res => {
+                console.log(res);
+                res.data.reverse();
+                res.data.forEach(item => {
+                    item.dt = dayjs(item.dt).toNow(); //设置属性值
+                    console.log(item.dt, typeof item.dt);
+                });
+                let htmlStr = template("temp_comment", res);
+                $('#comment_detail_list').html(htmlStr);
+            })
+        }
         getAndShow();
-        // 获取文章id
-        var id = location.search.substr(4);
+
         console.log(id);
         // 显示文章相关内容
-        article.getDetail(id, function(res) {
-            // console.log(res);
-            $('#article_title').text(res.data.title);
-            $('#article_author').text(res.data.author);
-            $('#article_date').text(res.data.date);
+        article.getDetail(id, res => {
+                // console.log(res);
+                $('#article_title').text(res.data.title);
+                $('#article_author').text(res.data.author);
+                $('#article_date').text(res.data.date);
 
-            $('#article_content').html(res.data.content);
-            var typeId = res.data.type;
-            console.log(typeId); // 8
-            //处理文章分类问题
-            // 在文章详情数据中，res.data.type保存是类型的编号
-            // 但是，要显示在页面上的却要是类型的名称。
-            // 思路： 
-            //  1. 先取出所有的类型数据
-            //  2. 在其中找出编号与res.data.type相同的那一项，再取出它的名称
-            category.get(function(res) {
-                console.log(res);
-                var cate = res.data.find(function(item, index, self) {
-                        if (item.id == typeId) {
-                            return true;
-                        }
-                    })
-                    // console.log(cate.name);
-                if (cate) {
-                    $('#article_type').text(cate.name);
-                }
+                $('#article_content').html(res.data.content);
+                let typeId = res.data.type;
+                console.log(typeId); // 8
+                //处理文章分类问题
+                // 在文章详情数据中，res.data.type保存是类型的编号
+                // 但是，要显示在页面上的却要是类型的名称。
+                // 思路： 
+                //  1. 先取出所有的类型数据
+                //  2. 在其中找出编号与res.data.type相同的那一项，再取出它的名称
+                category.get(res => {
+                    console.log(res);
+                    let cate = res.data.find((item, index, self) => {
+                            if (item.id == typeId) {
+                                return true;
+                            }
+                        })
+                        // console.log(cate.name);
+                    if (cate) {
+                        $('#article_type').text(cate.name);
+                    }
+                })
             })
-        })
-
-        // 评论功能,发布评论
-        $('#btnAdd').click(function() {
+            // 评论功能,发布评论
+        $('#btnAdd').click(() => {
             // 获取输入框内容
-            var name = $('#comment_name').val().trim();
-            var content = $('#comment_content').val().trim();
+            let name = $('#comment_name').val().trim();
+            let content = $('#comment_content').val().trim();
             if (name == "" || content == "") {
                 alert('不能为空')
             }
-            comment.publish(name, content, id, function(res) {
+            comment.publish(name, content, id, res => {
                 // console.log(res);
                 if (res.code == 200) {
-                    var name = $('#comment_name').val('');
-                    var content = $('#comment_content').val('');
+                    let name = $('#comment_name').val('');
+                    let content = $('#comment_content').val('');
                     getAndShow();
                 }
 
             })
         })
-
-        // 获取评论列表   comment_detail_list
-        function getAndShow() {
-            comment.show(id, function(res) {
-                console.log(res);
-                res.data.reverse();
-                res.data.forEach(function(item) {
-                    item.dt = dayjs(item.dt).toNow(); //设置属性值
-                    console.log(item.dt, typeof item.dt);
-                })
-                var htmlStr = template("temp_comment", res);
-                $('#comment_detail_list').html(htmlStr);
-            })
-        }
     </script>
 </body>
 

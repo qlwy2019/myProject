@@ -89,18 +89,18 @@
         {{/each}}
     </script>
     <script>
-        var id = location.search.substr(4);
+        let id = location.search.substr(4);
         //显示文章详情
-        article.getDetail(id, function(res) {
+        article.getDetail(id, res => {
             console.log(res);
-            var typeId = res.data.type;
+            let typeId = res.data.type;
             $('#article_title').val(res.data.title);
             $('#article_cover').prop('src', res.data.cover);
             $('#aticle-date').val(res.data.date);
             $('#rich_content').val(res.data.content);
             // 获取文章类别
-            category.get(function(res) {
-                var htmlStr = template('temp_cate', res);
+            category.get(res => {
+                let htmlStr = template('temp_cate', res);
                 $('#aticle-edit').html(htmlStr);
                 // 显示当前选中文章的类别
                 $('#aticle-edit').val(typeId);
@@ -108,16 +108,20 @@
         })
 
         // 编辑文章
-        $('#btn_edit').click(function() {
-            var fd = new FormData(document.getElementById('myform'));
+        $('#btn_edit').click(() => {
+            let fd = new FormData(document.getElementById('myform'));
             fd.append('id', id); //添加属性
             fd.set('content', tinyMCE.activeEditor.getContent()); //富文本域内容获取
-            article.edit(fd, function(res) {
-                if (res.code == 200) {
+            article.edit(fd, res => {
+                let {
+                    code,
+                    msg
+                } = res
+                if (code == 200) {
                     alert('修改成功')
                     location.href = "./index.html";
                 } else {
-                    alert(res.msg);
+                    alert(msg);
                 }
 
             })

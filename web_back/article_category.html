@@ -149,80 +149,78 @@
     </script>
     <script>
         //获取文章诸多类别
-        getAndShow();
-
-        function getAndShow() {
-            category.get(function(res) {
+        let getAndShow = () => {
+            category.get(res => {
                 // console.log(res);
-                var htmlStr = template('temp', res);
+                let htmlStr = template('temp', res);
                 $('#article_cate').html(htmlStr);
             })
         }
+        getAndShow();
         //删除文章种类
         $('#article_cate').on('click', '.del', function() {
-            if (window.confirm('确定要删除吗？') === false) {
-                // 取消删除 
+            if (window.confirm('确定要删除吗？') === false) { // 取消删除 
                 return;
             }
-            var id = $(this).attr('cate-id');
-            category.del(id, function(res) {
-                // console.log(res);
-                getAndShow();
-            })
+            let id = $(this).attr('cate-id');
+            category.del(id, res => getAndShow())
         })
 
         //编辑文章种类
         $('#article_cate').on('click', '.edit', function() {
                 $('#editModal').modal('show');
-                var id = $(this).attr('cate-edit');
-                var name = $(this).attr('cate-name');
-                var slug = $(this).attr('cate-slug');
+                let id = $(this).attr('cate-edit');
+                let name = $(this).attr('cate-name');
+                let slug = $(this).attr('cate-slug');
                 $('#cate-edit-id').val(id);
                 $('#cate-edit-name').val(name);
                 $('#cate-edit-slug').val(slug);
             })
             // 编辑后保存
-        $('#edit-save').click(function() {
-            var id = $('#cate-edit-id').val().trim();
-            var name = $('#cate-edit-name').val().trim();
-            var slug = $('#cate-edit-slug').val().trim();
+        $('#edit-save').click(() => {
+            let id = $('#cate-edit-id').val().trim();
+            let name = $('#cate-edit-name').val().trim();
+            let slug = $('#cate-edit-slug').val().trim();
             if (name === '' || slug === '') {
                 alert('不能为空')
                 return;
             }
             category.edit(id, name, slug, function(res) {
                 // console.log(res);
-                if (res.code === 200) {
+                let {
+                    code,
+                    msg
+                } = res;
+                if (code === 200) {
                     $('#editModal').modal('hide');
                     getAndShow();
                 } else {
-                    alert(res.msg);
+                    alert(msg);
                 }
             })
         })
-        $('#edit-shutoff').click(function() {
-            $('#editModal').modal('hide');
-        })
+        $('#edit-shutoff').click(() => $('#editModal').modal('hide'))
 
         // 新增种类
-        $('#model_add').click(function() {
-            var name = $('#cate-name').val().trim();
-            var slug = $('#cate-slug').val().trim();
+        $('#model_add').click(() => {
+            let name = $('#cate-name').val().trim();
+            let slug = $('#cate-slug').val().trim();
             if (name === '' || slug === '') {
                 alert('不能为空')
                 return;
             }
-            category.add(name, slug, function(res) {
+            category.add(name, slug, res => {
                 console.log(res);
-                if (res.code === 200) {
+                let {
+                    code
+                } = res;
+                if (code === 200) {
                     $('#addModal').modal('hide');
                     getAndShow();
                 }
             })
         })
-        $('#model_shutoff').click(function() {
-            $('#addModal').modal('hide');
-        })
+        $('#model_shutoff').click(() => $('#addModal').modal('hide'))
     </script>
 </body>
 
